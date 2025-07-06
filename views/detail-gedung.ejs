@@ -1,0 +1,57 @@
+<%- include('partials/header') %>
+
+<div class="d-flex" id="wrapper">
+  <!-- Sidebar -->
+  <%- include('partials/sidebar') %>
+
+  <!-- Page Content -->
+  <div id="page-content-wrapper">
+    <!-- Navbar -->
+    <%- include('partials/navbar') %>
+
+    <div class="container-fluid px-4">
+      <h1 class="mt-4"><%= gedung.namaGedung %></h1>
+
+      <div class="card shadow-sm border-0">
+        <div class="card-body">
+          <div class="row">
+            <!-- Kolom Gambar -->
+            <div class="col-lg-7">
+              <img src="<%= gedung.gambarUrl %>" class="img-fluid rounded mb-3" alt="<%= gedung.namaGedung %>" />
+            </div>
+            <!-- Kolom Informasi -->
+            <div class="col-lg-5">
+              <h3>Harga Sewa</h3>
+              <p class="fs-4 text-primary fw-bold">Rp <%= gedung.hargaSewa.toLocaleString('id-ID') %> / hari</p>
+
+              <h4 class="mt-4">Alamat</h4>
+              <p><i class="fas fa-map-marker-alt me-2"></i><%= gedung.alamat %></p>
+
+              <div class="d-grid mt-4">
+                <a href="/booking/new/<%= gedung._id %>" class="btn btn-lg btn-success"> <i class="fas fa-calendar-plus me-2"></i>Pesan Sekarang </a>
+              </div>
+            </div>
+          </div>
+          <hr class="my-4" />
+          <!-- Deskripsi dan Fasilitas -->
+          <div>
+            <h3>Deskripsi Gedung</h3>
+            <p><%= gedung.deskripsi %></p>
+
+            <h3 class="mt-4">Fasilitas yang Termasuk</h3>
+            <ul class="list-group list-group-flush">
+              <% gedung.fasilitas.forEach(f => { %>
+              <li class="list-group-item"><i class="fas fa-check-circle text-success me-2"></i><%= f %></li>
+              <% }) %>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="my-4">
+        <a href="/" class="btn btn-outline-secondary"> <i class="fas fa-arrow-left me-2"></i>Kembali ke Daftar Gedung </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%- include('partials/footer') %>

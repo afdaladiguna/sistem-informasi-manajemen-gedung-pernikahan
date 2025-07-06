@@ -1,0 +1,112 @@
+<%- include('../partials/header') %>
+
+<div class="d-flex" id="wrapper">
+  <!-- Sidebar -->
+  <%- include('../partials/sidebar') %>
+
+  <!-- Page Content -->
+  <div id="page-content-wrapper">
+    <!-- Navbar -->
+    <%- include('../partials/navbar') %>
+
+    <div class="container-fluid px-4">
+      <h1 class="mt-4">Validasi Pesanan</h1>
+      <p>Kelola semua permintaan reservasi gedung yang masuk.</p>
+
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table table-hover align-middle">
+              <thead class="table-light">
+                <tr>
+                  <th scope="col">Nama Pemesan</th>
+                  <th scope="col">Gedung</th>
+                  <th scope="col">Tanggal Pesan</th>
+                  <th scope="col">Status</th>
+                  <th scope="col" class="text-center">Aksi</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% if (bookings.length > 0) { %> <% bookings.forEach(booking => { %>
+                <tr>
+                  <td><%= booking.userId ? booking.userId.namaLengkap : 'Pengguna Dihapus' %></td>
+                  <td><%= booking.gedungId ? booking.gedungId.namaGedung : 'Gedung Dihapus' %></td>
+                  <td>
+                    <%= new Date(booking.tanggalCheckIn).toLocaleDateString('id-ID', { day: '2-digit', month: 'short' }) %> - <%= new Date(booking.tanggalCheckOut).toLocaleDateString('id-ID', { day: '2-digit', month: 'short', year: 'numeric' }) %>
+                  </td>
+                  <td>
+                    <% let badgeClass = 'bg-secondary'; if (booking.status === 'pending') badgeClass = 'bg-warning text-dark'; if (booking.status === 'confirmed') badgeClass = 'bg-success'; if (booking.status === 'cancelled') badgeClass =
+                    'bg-danger'; %>
+                    <span class="badge <%= badgeClass %>"><%= booking.status.charAt(0).toUpperCase() + booking.status.slice(1) %></span>
+                  </td>
+                  <td class="text-center">
+                    <% if (booking.status === 'pending') { %>
+                    <!-- Tombol untuk memicu modal -->
+                    <button type="button" class="btn btn-sm btn-success me-1" data-bs-toggle="modal" data-bs-target="#actionModal" data-booking-id="<%= booking._id %>" data-action="confirm"><i class="fas fa-check"></i> Setujui</button>
+                    <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#actionModal" data-booking-id="<%= booking._id %>" data-action="cancel"><i class="fas fa-times"></i> Tolak</button>
+                    <% } else { %> - <% } %>
+                  </td>
+                </tr>
+                <% }) %> <% } else { %>
+                <tr>
+                  <td colspan="5" class="text-center">Tidak ada data pesanan.</td>
+                </tr>
+                <% } %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Konfirmasi Aksi -->
+<div class="modal fade" id="actionModal" tabindex="-1" aria-labelledby="actionModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="actionModalLabel">Konfirmasi Tindakan</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" id="modalBodyText">Apakah Anda yakin?</div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+        <form id="actionForm" action="" method="POST">
+          <input type="hidden" id="newStatus" name="newStatus" value="" />
+          <button type="submit" class="btn" id="confirmButton">Ya</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const actionModal = document.getElementById("actionModal");
+  actionModal.addEventListener("show.bs.modal", function (event) {
+    const button = event.relatedTarget;
+    const bookingId = button.getAttribute("data-booking-id");
+    const action = button.getAttribute("data-action");
+
+    const actionForm = document.getElementById("actionForm");
+    const newStatusInput = document.getElementById("newStatus");
+    const modalBody = document.getElementById("modalBodyText");
+    const confirmButton = document.getElementById("confirmButton");
+
+    actionForm.action = `/kepala-gedung/booking/update/${bookingId}`;
+
+    if (action === "confirm") {
+      newStatusInput.value = "confirmed";
+      modalBody.textContent = "Apakah Anda yakin ingin MENYETUJUI pesanan ini?";
+      confirmButton.className = "btn btn-success";
+      confirmButton.textContent = "Ya, Setujui";
+    } else {
+      newStatusInput.value = "cancelled";
+      modalBody.textContent = "Apakah Anda yakin ingin MENOLAK pesanan ini?";
+      confirmButton.className = "btn btn-danger";
+      confirmButton.textContent = "Ya, Tolak";
+    }
+  });
+</script>
+
+<%- include('../partials/footer') %>

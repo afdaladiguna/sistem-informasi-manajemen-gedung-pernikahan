@@ -1,0 +1,119 @@
+<%- include('partials/header') %>
+
+<div class="d-flex" id="wrapper">
+  <!-- Sidebar -->
+  <%- include('partials/sidebar') %>
+
+  <!-- Page Content -->
+  <div id="page-content-wrapper">
+    <!-- Navbar -->
+    <%- include('partials/navbar') %>
+
+    <div class="container-fluid px-4">
+      <!-- Welcome Header -->
+      <div class="d-sm-flex align-items-center justify-content-between mb-4 mt-4">
+        <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
+        <!-- Optional: Tombol Aksi Cepat -->
+        <!-- <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Generate Report</a> -->
+      </div>
+
+      <div class="alert alert-info" role="alert">
+        <h4 class="alert-heading">Selamat Datang, <%= currentUser.namaLengkap %>!</h4>
+        <p>Anda login sebagai <strong><%= userRole.replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase()) %></strong>. Gunakan menu di samping untuk menavigasi sistem.</p>
+      </div>
+
+      <!-- Kartu Statistik (Konten dinamis berdasarkan role) -->
+      <div class="row">
+        <!-- Kartu untuk Masyarakat -->
+        <% if (userRole === 'masyarakat') { %>
+        <div class="col-xl-4 col-md-6 mb-4">
+          <div class="card border-left-primary shadow h-100 py-2">
+            <div class="card-body">
+              <div class="row no-gutters align-items-center">
+                <div class="col mr-2">
+                  <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Total Pesanan Anda</div>
+                  <div class="h5 mb-0 font-weight-bold text-gray-800">5</div>
+                  <!-- Ganti dengan data asli -->
+                </div>
+                <div class="col-auto">
+                  <i class="fas fa-calendar-alt fa-2x text-gray-300"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <% } %>
+
+        <!-- Kartu untuk Admin -->
+        <% if (userRole === 'admin') { %>
+        <div class="col-xl-4 col-md-6 mb-4">
+          <div class="card border-left-info shadow h-100 py-2">
+            <div class="card-body">
+              <div class="row no-gutters align-items-center">
+                <div class="col mr-2">
+                  <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Jumlah Gedung</div>
+                  <div class="h5 mb-0 font-weight-bold text-gray-800">10</div>
+                  <!-- Ganti dengan data asli -->
+                </div>
+                <div class="col-auto">
+                  <i class="fas fa-building fa-2x text-gray-300"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-xl-4 col-md-6 mb-4">
+          <div class="card border-left-success shadow h-100 py-2">
+            <div class="card-body">
+              <div class="row no-gutters align-items-center">
+                <div class="col mr-2">
+                  <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Total Pesanan Masuk</div>
+                  <div class="h5 mb-0 font-weight-bold text-gray-800">25</div>
+                  <!-- Ganti dengan data asli -->
+                </div>
+                <div class="col-auto">
+                  <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <% } %>
+
+        <!-- Kartu untuk Kepala Gedung -->
+        <% if (userRole === 'kepala_gedung') { %>
+        <div class="col-xl-4 col-md-6 mb-4">
+          <div class="card border-left-warning shadow h-100 py-2">
+            <div class="card-body">
+              <div class="row no-gutters align-items-center">
+                <div class="col mr-2">
+                  <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Pesanan Perlu Validasi</div>
+                  <div class="h5 mb-0 font-weight-bold text-gray-800">3</div>
+                  <!-- Ganti dengan data asli -->
+                </div>
+                <div class="col-auto">
+                  <i class="fas fa-comments fa-2x text-gray-300"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <% } %>
+      </div>
+
+      <!-- Anda bisa menambahkan elemen lain di sini, seperti grafik atau tabel ringkasan -->
+    </div>
+  </div>
+</div>
+
+<script>
+  const sidebarToggle = document.getElementById("sidebarToggle");
+  if (sidebarToggle) {
+    sidebarToggle.addEventListener("click", (event) => {
+      event.preventDefault();
+      document.body.classList.toggle("sb-sidenav-toggled");
+    });
+  }
+</script>
+
+<%- include('partials/footer') %>

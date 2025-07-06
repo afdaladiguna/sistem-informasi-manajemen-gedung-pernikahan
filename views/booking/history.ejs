@@ -1,0 +1,55 @@
+<%- include('../partials/header') %>
+
+<div class="d-flex" id="wrapper">
+  <!-- Sidebar -->
+  <%- include('../partials/sidebar') %>
+
+  <!-- Page Content -->
+  <div id="page-content-wrapper">
+    <!-- Navbar -->
+    <%- include('../partials/navbar') %>
+
+    <div class="container-fluid px-4">
+      <h1 class="mt-4">Riwayat Pesanan Saya</h1>
+      <p>Berikut adalah daftar semua pesanan yang telah Anda buat.</p>
+
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table table-hover align-middle">
+              <thead class="table-light">
+                <tr>
+                  <th scope="col">Nama Gedung</th>
+                  <th scope="col">Tanggal Check-in</th>
+                  <th scope="col">Tanggal Check-out</th>
+                  <th scope="col">Total Biaya</th>
+                  <th scope="col">Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% if (bookings.length > 0) { %> <% bookings.forEach(booking => { %>
+                <tr>
+                  <td><% if (booking.gedungId) { %> <%= booking.gedungId.namaGedung %> <% } else { %> Gedung Dihapus <% } %></td>
+                  <td><%= new Date(booking.tanggalCheckIn).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' }) %></td>
+                  <td><%= new Date(booking.tanggalCheckOut).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' }) %></td>
+                  <td>Rp <%= booking.totalBiaya.toLocaleString('id-ID') %></td>
+                  <td>
+                    <% let badgeClass = 'bg-secondary'; if (booking.status === 'pending') badgeClass = 'bg-warning'; if (booking.status === 'confirmed') badgeClass = 'bg-success'; if (booking.status === 'rejected') badgeClass = 'bg-danger'; %>
+                    <span class="badge <%= badgeClass %>"><%= booking.status.charAt(0).toUpperCase() + booking.status.slice(1) %></span>
+                  </td>
+                </tr>
+                <% }) %> <% } else { %>
+                <tr>
+                  <td colspan="5" class="text-center">Anda belum pernah membuat pesanan.</td>
+                </tr>
+                <% } %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%- include('../partials/footer') %>

@@ -1,0 +1,59 @@
+<div class="d-flex flex-column flex-shrink-0 p-3 text-white bg-dark" id="sidebar-wrapper">
+  <a href="/dashboard" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
+    <i class="fas fa-building fa-2x me-2"></i>
+    <span class="fs-4">Sewa Gedung</span>
+  </a>
+  <hr />
+  <ul class="nav nav-pills flex-column mb-auto">
+    <li class="nav-item">
+      <a href="/dashboard" class="nav-link text-white" aria-current="page">
+        <i class="fas fa-tachometer-alt me-2"></i>
+        Dashboard
+      </a>
+    </li>
+
+    <!-- Menu untuk Masyarakat -->
+    <% if (userRole === 'masyarakat') { %>
+    <li>
+      <a href="/" class="nav-link text-white">
+        <i class="fas fa-calendar-plus me-2"></i>
+        Reservasi Gedung
+      </a>
+    </li>
+    <li>
+      <a href="/booking/history" class="nav-link text-white">
+        <i class="fas fa-history me-2"></i>
+        Riwayat Pesanan
+      </a>
+    </li>
+    <% } %>
+
+    <!-- Menu untuk Admin -->
+    <% if (userRole === 'admin') { %>
+    <li>
+      <a href="/admin/gedung/tambah" class="nav-link text-white">
+        <i class="fas fa-plus-circle me-2"></i>
+        Tambah Gedung
+      </a>
+    </li>
+    <li>
+      <a href="/admin/gedung" class="nav-link text-white">
+        <i class="fas fa-table me-2"></i>
+        Data Gedung
+      </a>
+    </li>
+    <% } %>
+
+    <!-- Menu untuk Kepala Gedung -->
+    <% if (userRole === 'kepala_gedung') { %>
+    <li>
+      <a href="/kepala-gedung/dashboard" class="nav-link text-white">
+        <i class="fas fa-check-double me-2"></i>
+        Validasi Pesanan
+      </a>
+    </li>
+    <% } %>
+  </ul>
+  <hr />
+  <!-- Dropdown di sidebar akan di-handle oleh navbar -->
+</div>

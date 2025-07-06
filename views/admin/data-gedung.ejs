@@ -1,0 +1,97 @@
+<%- include('../partials/header') %>
+
+<div class="d-flex" id="wrapper">
+  <!-- Sidebar -->
+  <%- include('../partials/sidebar') %>
+
+  <!-- Page Content -->
+  <div id="page-content-wrapper">
+    <!-- Navbar -->
+    <%- include('../partials/navbar') %>
+
+    <div class="container-fluid px-4">
+      <div class="d-flex justify-content-between align-items-center">
+        <h1 class="mt-4">Data Gedung</h1>
+        <a href="/admin/gedung/tambah" class="btn btn-primary mt-4"> <i class="fas fa-plus me-2"></i>Tambah Gedung </a>
+      </div>
+      <p>Berikut adalah daftar semua gedung yang terdaftar dalam sistem.</p>
+
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table table-hover align-middle">
+              <thead class="table-light">
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">Gambar</th>
+                  <th scope="col">Nama Gedung</th>
+                  <th scope="col">Alamat</th>
+                  <th scope="col">Harga Sewa</th>
+                  <th scope="col">Aksi</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% if (gedung.length > 0) { %> <% gedung.forEach((item, index) => { %>
+                <tr>
+                  <th scope="row"><%= index + 1 %></th>
+                  <td>
+                    <img src="<%= item.gambarUrl %>" alt="<%= item.namaGedung %>" width="100" class="img-thumbnail" />
+                  </td>
+                  <td><%= item.namaGedung %></td>
+                  <td><%= item.alamat %></td>
+                  <td>Rp <%= item.hargaSewa.toLocaleString('id-ID') %></td>
+                  <td>
+                    <a href="/admin/gedung/edit/<%= item._id %>" class="btn btn-sm btn-warning me-1">
+                      <i class="fas fa-edit"></i>
+                    </a>
+                    <!-- Tombol untuk memicu modal -->
+                    <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" data-id="<%= item._id %>">
+                      <i class="fas fa-trash"></i>
+                    </button>
+                  </td>
+                </tr>
+                <% }) %> <% } else { %>
+                <tr>
+                  <td colspan="6" class="text-center">Belum ada data gedung.</td>
+                </tr>
+                <% } %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Konfirmasi Hapus -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="deleteModalLabel">Konfirmasi Hapus</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">Apakah Anda yakin ingin menghapus data gedung ini? Tindakan ini tidak dapat dibatalkan.</div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+        <form id="deleteForm" action="" method="POST">
+          <button type="submit" class="btn btn-danger">Ya, Hapus</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Script untuk mengatur action form hapus di modal
+  const deleteModal = document.getElementById("deleteModal");
+  deleteModal.addEventListener("show.bs.modal", function (event) {
+    const button = event.relatedTarget;
+    const gedungId = button.getAttribute("data-id");
+    const deleteForm = document.getElementById("deleteForm");
+    deleteForm.action = `/admin/gedung/delete/${gedungId}`;
+  });
+</script>
+
+<%- include('../partials/footer') %>

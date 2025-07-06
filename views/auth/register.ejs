@@ -1,0 +1,31 @@
+<%- include('../partials/header') %>
+
+<div class="container vh-100 d-flex justify-content-center align-items-center">
+  <div class="card shadow" style="width: 28rem">
+    <div class="card-body p-5">
+      <h3 class="card-title text-center mb-4">Pemesanan Gedung</h3>
+      <form action="/auth/register" method="POST">
+        <div class="mb-3">
+          <label for="namaLengkap" class="form-label">Nama Lengkap</label>
+          <input type="text" class="form-control" id="namaLengkap" name="namaLengkap" required />
+        </div>
+        <div class="mb-3">
+          <label for="username" class="form-label">Username</label>
+          <input type="text" class="form-control" id="username" name="username" required />
+        </div>
+        <div class="mb-3">
+          <label for="password" class="form-label">Password</label>
+          <input type="password" class="form-control" id="password" name="password" required />
+        </div>
+        <div class="d-grid mb-3">
+          <button type="submit" class="btn btn-primary">Daftar</button>
+        </div>
+      </form>
+      <div class="text-center">
+        <small>Sudah memiliki Akun? <a href="/auth/login">Masuk</a></small>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%- include('../partials/footer') %>
